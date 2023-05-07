@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <title>Requisição XMLHttpRequest</title>
+</head>
+
+<body>
+    <h1>Consulta de endereço através do CEP</h1>
+    <input id="cep" name="cep" type="text" placeholder="digite apenas números" />
+    <button onclick="consultarCEP()">Buscar CEP</button>
+    <h2>Resultado</h2>
+    <p id="resultado">
+
+    </p>
+
+</body>
+<script type="text/javascript">
+
+    function consultarCEP() {
+        var cep = document.getElementById("cep").value;
+        var xmlHttpRequest = new XMLHttpRequest();
+
+        var url = "http://cep.la/" + cep;
+
+        xmlHttpRequest.open("GET", url, true);
+        xmlHttpRequest.setRequestHeader("Accept", "application/json");
+        xmlHttpRequest.send();
+        xmlHttpRequest.onreadystatechange = function () {
+            if (xmlHttpRequest.readyState == 3) {
+                console.log("Carregando o conteúdo");
+            }
+            if (xmlHttpRequest.readyState == 4) {
+                console.log("CEP: " + xmlHttpRequest.responseText);
+                var jsonResponse = JSON.parse(xmlHttpRequest.responseText);
+                document.getElementById("resultado").innerHTML = "CEP: " + jsonResponse.cep + "<br/>" + "UF: " + jsonResponse.uf + "<br/>" + "Cidade: " + jsonResponse.cidade + "<br/>" + "Bairro: " + jsonResponse.bairro + "<br/>" + "Lagradouro: " + jsonResponse.lagradouro;
+                console.log(jsonResponse);
+            }
+        };
+    }
+</script>
+
+</html>
